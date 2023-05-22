@@ -20,17 +20,22 @@
       :locationsArray="locationsArray"
       @updateLocations="updateLocations"
     ></SearchHistoryTable>
+    <TimeZoneComponent
+      :lastLocation="locationsArray[locationsArray.length - 1]"
+    ></TimeZoneComponent>
   </div>
 </template>
 
 <script>
 import SearchHistoryTable from "./SearchHistoryTable";
 import GoogleMapComponent from "./GoogleMapComponent.vue";
+import TimeZoneComponent from "./TimeZoneComponent.vue";
 export default {
   name: "SearchLocation",
   components: {
     GoogleMapComponent,
     SearchHistoryTable,
+    TimeZoneComponent,
   },
   data() {
     return {
@@ -43,16 +48,9 @@ export default {
   },
   methods: {
     async submitSearch() {
-      const apiKey = process.env.VUE_APP_GOOGLE_API;
-      await this.checkAddress(apiKey);
-      await this.checkTimezone(apiKey);
-
-      // Increment the key each time search is submitted
-      this.componentKey += 1;
-    },
-    async checkAddress(apiKey) {
       // Search for lat long
       try {
+        const apiKey = process.env.VUE_APP_GOOGLE_API;
         const res = await fetch(
           `https://maps.googleapis.com/maps/api/geocode/json?address=${this.inputValue}&key=${apiKey}`
         );
@@ -64,39 +62,36 @@ export default {
           // Store lat long in the state
           this.latitude = locationResult.lat;
           this.longitude = locationResult.lng;
-          this.locationsArray.push({
-            latLng: { lat: this.latitude, lng: this.longitude },
-            address: result.results[0].formatted_address,
-            timestamp: Date.now(),
-            // For the history table checkbox
-            selected: false,
-          });
+
+          await this.checkTimezone(apiKey, result.results[0].formatted_address);
         }
       } catch (e) {
         console.log(e);
       }
     },
-    async checkTimezone(apiKey) {
+    async checkTimezone(apiKey, address) {
       try {
         const res = await fetch(
-          ` https://maps.googleapis.com/maps/api/timezone/json?location=${this.latitude},${this.longitude}&timestamp=${Math.floor(Date.now() / 1000)}&key=${apiKey}`
+          ` https://maps.googleapis.com/maps/api/timezone/json?location=${
+            this.latitude
+          },${this.longitude}&timestamp=${Math.floor(Date.now() / 1000)}&key=${apiKey}`
         );
         const result = await res.json();
-        // if (result.error_message) {
-        //   console.log(result.error_message);
-        // } else {
-        //   const locationResult = result.results[0].geometry.location;
-        //   // Store lat long in the state
-        //   this.latitude = locationResult.lat;
-        //   this.longitude = locationResult.lng;
-        //   this.locationsArray.push({
-        //     latLng: { lat: this.latitude, lng: this.longitude },
-        //     address: result.results[0].formatted_address,
-        //     timestamp: Date.now(),
-        //     // For the history table checkbox
-        //     selected: false,
-        //   });
-        console.log(result);
+        if (result.error_message) {
+          console.log(result.error_message);
+        } else {
+          this.locationsArray.push({
+            latLng: { lat: this.latitude, lng: this.longitude },
+            address,
+            timestamp: Date.now(),
+            // For the history table checkbox
+            selected: false,
+            timeZoneId: result.timeZoneId,
+            timeZoneName: result.timeZoneName,
+          });
+          // Increment the key each time search is submitted
+          this.componentKey += 1;
+        }
       } catch (e) {
         console.log(e);
       }
