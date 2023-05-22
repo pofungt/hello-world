@@ -9,7 +9,11 @@
     <button type="button" @click="submitSearch">Search</button>
   </div>
   <div v-if="latitude && longitude">
-    <GoogleMapComponent lat="latitude" long="longitude"></GoogleMapComponent>
+    <GoogleMapComponent
+      :key="componentKey"
+      v-bind:latitude="latitude"
+      v-bind:longitude="longitude"
+    ></GoogleMapComponent>
   </div>
 </template>
 
@@ -17,7 +21,7 @@
 import GoogleMapComponent from "./GoogleMapComponent.vue";
 export default {
   name: "SearchLocation",
-    components: {
+  components: {
     GoogleMapComponent,
   },
   data() {
@@ -25,15 +29,31 @@ export default {
       inputValue: "",
       latitude: null,
       longitude: null,
+      componentKey: 0,
     };
   },
   methods: {
     async submitSearch() {
-        // Search for lat long
-
-        // Store lat long in the state
-        this.latitude = "43.8534144";
-        this.longitude = "-79.3247744";
+      // Search for lat long
+      try {
+        const apiKey = process.env.VUE_APP_GOOGLE_API;
+        const res = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${this.inputValue}&key=${apiKey}`
+        );
+        const result = await res.json();
+        if (result.error_message) {
+          console.log(result.error_message);
+        } else {
+            const locationResult = result.results[0].geometry.location;
+          // Store lat long in the state
+          this.latitude = locationResult.lat;
+          this.longitude = locationResult.lng;
+          this.componentKey += 1; // Increment the key each time search is submitted
+          console.log(this.latitude,this.longitude);
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };

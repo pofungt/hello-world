@@ -5,33 +5,43 @@
     :center="center"
     :zoom="15"
   >
-    <Marker :options="{ position: center }" />
+    <Marker :options="markerOptions" />
   </GoogleMap>
 </template>
 
 <script>
 import { GoogleMap, Marker } from "vue3-google-map";
+import { reactive, watch } from "vue";
 
 export default {
-  data() {
-    return {
-      apiKey: process.env.VUE_APP_GOOGLE_API,
-    };
-  },
   computed: {
     apiValue() {
-        return process.env.VUE_APP_GOOGLE_API;
-    }
+      return process.env.VUE_APP_GOOGLE_API;
+    },
   },
   props: {
-    lat: String,
-    long: String,
+    latitude: Number,
+    longitude: Number,
   },
   components: { GoogleMap, Marker },
-  setup() {
-    const center = { lat: 44.0384, lng: -79.2000 };
+  setup(props) {
+    const center = reactive({ lat: props.latitude, lng: props.longitude });
+    const markerOptions = reactive({
+      position: center,
+      label: "L",
+      title: "LADY LIBERTY",
+    });
 
-    return { center };
+    watch(
+      () => [props.latitude, props.longitude],
+      ([newLat, newLng]) => {
+        center.lat = newLat;
+        center.lng = newLng;
+        markerOptions.position = center;
+      }
+    );
+
+    return { center, markerOptions };
   },
 };
 </script>
