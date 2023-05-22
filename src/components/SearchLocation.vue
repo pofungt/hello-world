@@ -29,6 +29,9 @@ export default {
   },
   methods: {
     async submitSearch() {
+        // Search for lat long
+
+        // Store lat long in the state
         this.latitude = "43.8534144";
         this.longitude = "-79.3247744";
     },
