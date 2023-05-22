@@ -5,7 +5,13 @@
     :center="center"
     :zoom="15"
   >
-    <Marker :options="markerOptions" />
+    <MarkerCluster>
+      <Marker
+        v-for="(location, i) in locations"
+        :options="{ position: location }"
+        :key="i"
+      />
+    </MarkerCluster>
   </GoogleMap>
 </template>
 
@@ -22,26 +28,23 @@ export default {
   props: {
     latitude: Number,
     longitude: Number,
+    locationsArray: Array,
   },
   components: { GoogleMap, Marker },
   setup(props) {
     const center = reactive({ lat: props.latitude, lng: props.longitude });
-    const markerOptions = reactive({
-      position: center,
-      label: "L",
-      title: "LADY LIBERTY",
-    });
+    let locations = reactive(props.locationsArray);
 
     watch(
-      () => [props.latitude, props.longitude],
-      ([newLat, newLng]) => {
+      () => [props.latitude, props.longitude, props.locationsArray],
+      ([newLat, newLng, newArr]) => {
         center.lat = newLat;
         center.lng = newLng;
-        markerOptions.position = center;
+        locations = newArr;
       }
     );
 
-    return { center, markerOptions };
+    return { center, locations };
   },
 };
 </script>

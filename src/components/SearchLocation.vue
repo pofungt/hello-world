@@ -13,6 +13,7 @@
       :key="componentKey"
       v-bind:latitude="latitude"
       v-bind:longitude="longitude"
+      v-bind:locationsArray="locationsArray"
     ></GoogleMapComponent>
   </div>
 </template>
@@ -29,6 +30,7 @@ export default {
       inputValue: "",
       latitude: null,
       longitude: null,
+      locationsArray: [],
       componentKey: 0,
     };
   },
@@ -48,8 +50,8 @@ export default {
           // Store lat long in the state
           this.latitude = locationResult.lat;
           this.longitude = locationResult.lng;
+          this.locationsArray.push({lat:this.latitude, lng:this.longitude});
           this.componentKey += 1; // Increment the key each time search is submitted
-          console.log(this.latitude,this.longitude);
         }
       } catch (e) {
         console.log(e);
