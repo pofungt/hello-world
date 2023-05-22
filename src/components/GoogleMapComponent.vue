@@ -8,7 +8,7 @@
     <MarkerCluster>
       <Marker
         v-for="(location, i) in locations"
-        :options="{ position: location }"
+        :options="{ position: location.latLng }"
         :key="i"
       />
     </MarkerCluster>
