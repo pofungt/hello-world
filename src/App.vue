@@ -1,19 +1,48 @@
 <template>
-  <GetLocation></GetLocation>
-  <SearchLocation></SearchLocation>
+  <el-button-group>
+    <el-button type="primary" color="#626aef" :dark="isDark" plain @click="goPage(1)">
+      <el-icon class="icon"><House /></el-icon>
+      Get Location
+    </el-button>
+    <el-button type="primary" color="#626aef" :dark="isDark" plain @click="goPage(2)">
+      <el-icon class="icon"><Search /></el-icon>
+      Search Address
+    </el-button>
+    <el-button type="primary" color="#626aef" :dark="isDark" plain @click="goPage(3)">
+      <el-icon class="icon"><MessageBox /></el-icon>
+      Search History
+    </el-button>
+  </el-button-group>
+  <GetLocation v-if="page===1"></GetLocation>
+  <SearchLocation v-else></SearchLocation>
 </template>
 
 <script>
-import GetLocation from './components/GetLocation.vue';
-import SearchLocation from './components/SearchLocation.vue';
+import {ref} from "vue";
+import GetLocation from "./components/GetLocation.vue";
+import SearchLocation from "./components/SearchLocation.vue";
+
+import { House, Search, MessageBox } from "@element-plus/icons-vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     GetLocation,
-    SearchLocation
+    SearchLocation,
+    House,
+    Search,
+    MessageBox
+  },
+    setup() {
+      const page = ref(1);
+
+      function goPage(pageNumber) {
+        page.value = pageNumber;
+      }
+
+      return { page, goPage }
   }
-}
+};
 </script>
 
 <style>
@@ -24,5 +53,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.icon {
+  margin-right: 10px;
 }
 </style>

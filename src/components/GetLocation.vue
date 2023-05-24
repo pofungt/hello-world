@@ -1,11 +1,11 @@
 <template>
   <div class="get-location">
-    <button type="button" @click="getLocation">Get your location</button>
-    <div v-if="latitude && longitude">
+    <el-button type="primary" @click="getLocation">Get your location</el-button>
+    <div v-if="latitude && longitude" class="get-location-result">
       <div>Latitude: {{ latitude }}</div>
       <div>Longitude: {{ longitude }}</div>
     </div>
-    <div v-if="address">
+    <div v-if="address" class="get-location-result">
       Address: {{ address }}
     </div>
   </div>
@@ -53,19 +53,7 @@ export default {
 </script>
 
 <style scoped>
-.get-location {
-  font-size: 20px;
-}
-
-button {
-  font-size: 30px;
-  border-radius: 10px;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-
-button:hover {
-  background-color: red;
-  color: white;
+.get-location-result {
+  font-size: 15px;
 }
 </style>
