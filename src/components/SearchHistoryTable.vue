@@ -97,15 +97,23 @@ export default {
   align-items: center;
 }
 td {
-  border: 1px solid black;
+  border: 1px solid #606266;
   padding: 8px;
 }
 table {
   font-family: "Helvetica Neue";
   margin: 10px 0;
+  color: #606266;
 }
 .table-title {
   font-weight: bold;
+  background-color: #F5F7FA;
+}
+.table-title > td:first-child {
+  border-top-left-radius: 10px;
+}
+.table-title > td:last-child {
+  border-top-right-radius: 10px;
 }
 .page-info {
   display: flex;
