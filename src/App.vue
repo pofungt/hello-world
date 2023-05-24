@@ -12,9 +12,13 @@
       <el-icon class="icon"><MessageBox /></el-icon>
       Search History
     </el-button>
+    <el-button type="primary" color="#626aef" :dark="isDark" plain @click="goPage(4)">
+      <el-icon><Clock /></el-icon>
+      Time Zone
+    </el-button>
   </el-button-group>
   <GetLocation v-if="page === 1"></GetLocation>
-  <SearchLocation v-else></SearchLocation>
+  <SearchLocation v-else :page="page"></SearchLocation>
 </template>
 
 <script>
@@ -22,7 +26,7 @@ import { ref } from "vue";
 import GetLocation from "./components/GetLocation.vue";
 import SearchLocation from "./components/SearchLocation.vue";
 
-import { House, Search, MessageBox } from "@element-plus/icons-vue";
+import { House, Search, MessageBox, Clock } from "@element-plus/icons-vue";
 
 export default {
   name: "App",
@@ -32,6 +36,7 @@ export default {
     House,
     Search,
     MessageBox,
+    Clock
   },
   setup() {
     const page = ref(1);

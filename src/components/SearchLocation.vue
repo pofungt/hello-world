@@ -1,5 +1,5 @@
 <template>
-  <div class="search-location">
+  <div class="search-location" v-if="page === 2">
     <el-input
       v-model="inputValue"
       class="w-50 m-1"
@@ -13,19 +13,23 @@
       </template>
     </el-input>
   </div>
+
   <div v-if="latitude && longitude && locationsArray.length">
     <GoogleMapComponent
+      v-if="page === 2"
       :key="componentKey"
       :latitude="latitude"
       :longitude="longitude"
       :locationsArray="locationsArray"
     ></GoogleMapComponent>
     <SearchHistoryTable
+      v-if="page === 3"
       :key="componentKey"
       :locationsArray="locationsArray"
       @updateLocations="updateLocations"
     ></SearchHistoryTable>
     <TimeZoneComponent
+      v-if="page === 4"
       :lastLocation="locationsArray[locationsArray.length - 1]"
     ></TimeZoneComponent>
   </div>
@@ -54,6 +58,9 @@ export default {
       componentKey: 0,
       Search,
     };
+  },
+  props: {
+    page: Number,
   },
   methods: {
     async submitSearch() {
@@ -109,7 +116,7 @@ export default {
       this.locationsArray = updatedLocationsArray;
       this.componentKey += 1;
     },
-  },
+  }
 };
 </script>
 
