@@ -1,8 +1,16 @@
 <template>
   <div class="searchTable">
-    <button @click="deleteSelected">Delete Selected</button>
+    <el-button
+      type="primary"
+      color="#626aef"
+      :dark="isDark"
+      plain
+      @click="deleteSelected"
+    >
+      Delete Selected
+    </el-button>
     <table>
-      <tr>
+      <tr class="table-title">
         <td></td>
         <td>Time Zone</td>
         <td>Address</td>
@@ -16,17 +24,32 @@
       </tr>
     </table>
     <div class="pageNavigation">
-      <button type="button" @click="previousPage">&lt;</button>
-      <div>Page {{ page }} of {{ totalPage }}</div>
-      <button type="button" @click="nextPage">&gt;</button>
+      <el-button
+        type="primary"
+        color="#626aef"
+        :dark="isDark"
+        plain
+        @click="previousPage"
+      >
+        <el-icon><ArrowLeftBold /></el-icon>
+      </el-button>
+      <div class="page-info">Page {{ page }} of {{ totalPage }}</div>
+      <el-button type="primary" color="#626aef" :dark="isDark" plain @click="nextPage">
+        <el-icon><ArrowRightBold /></el-icon>
+      </el-button>
     </div>
   </div>
 </template>
 
 <script>
 import { ref, computed } from "vue";
+import { ArrowLeftBold, ArrowRightBold } from "@element-plus/icons-vue";
 
 export default {
+  components: {
+    ArrowLeftBold,
+    ArrowRightBold
+  },
   props: {
     locationsArray: Array,
   },
@@ -68,9 +91,28 @@ export default {
   display: flex;
 }
 .searchTable {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+td {
+  border: 1px solid black;
+  padding: 8px;
+}
+table {
+  font-family: "Helvetica Neue";
+  margin: 10px 0;
+}
+.table-title {
+  font-weight: bold;
+}
+.page-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #626aef;
+  font-weight: bold;
+  margin: 0 10px;
 }
 </style>
