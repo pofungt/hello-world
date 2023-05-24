@@ -1,11 +1,15 @@
 <template>
-  <div>
-    {{ lastLocation.address }}
-  </div>
-  <div>{{ lastLocation.timeZoneId }} ({{ lastLocation.timeZoneName }})</div>
-  <div>
-    <span id="span">{{ currentTime }}</span>
-  </div>
+  <el-descriptions
+    title="Your Last Search"
+    direction="vertical"
+    :column="2"
+    :size="size"
+    border
+  >
+    <el-descriptions-item label="Address" align="center">{{ lastLocation.address }}</el-descriptions-item>
+    <el-descriptions-item label="Time Zone" align="center">{{ lastLocation.timeZoneId }} ({{ lastLocation.timeZoneName }})</el-descriptions-item>
+    <el-descriptions-item label="Local Time" align="center"><span id="span">{{ currentTime }}</span></el-descriptions-item>
+  </el-descriptions>
 </template>
 
 <script>
