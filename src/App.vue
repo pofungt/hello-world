@@ -1,5 +1,5 @@
 <template>
-  <el-button-group>
+  <el-button-group class="toolbar">
     <el-button type="primary" color="#626aef" :dark="isDark" plain @click="goPage(1)">
       <el-icon class="icon"><House /></el-icon>
       Get Location
@@ -13,12 +13,12 @@
       Search History
     </el-button>
   </el-button-group>
-  <GetLocation v-if="page===1"></GetLocation>
+  <GetLocation v-if="page === 1"></GetLocation>
   <SearchLocation v-else></SearchLocation>
 </template>
 
 <script>
-import {ref} from "vue";
+import { ref } from "vue";
 import GetLocation from "./components/GetLocation.vue";
 import SearchLocation from "./components/SearchLocation.vue";
 
@@ -31,17 +31,17 @@ export default {
     SearchLocation,
     House,
     Search,
-    MessageBox
+    MessageBox,
   },
-    setup() {
-      const page = ref(1);
+  setup() {
+    const page = ref(1);
 
-      function goPage(pageNumber) {
-        page.value = pageNumber;
-      }
+    function goPage(pageNumber) {
+      page.value = pageNumber;
+    }
 
-      return { page, goPage }
-  }
+    return { page, goPage };
+  },
 };
 </script>
 
@@ -53,6 +53,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.toolbar {
+  margin-bottom: 20px;
 }
 .icon {
   margin-right: 10px;

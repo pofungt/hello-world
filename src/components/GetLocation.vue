@@ -1,13 +1,19 @@
 <template>
   <div class="get-location">
     <el-button type="primary" @click="getLocation">Get your location</el-button>
-    <div v-if="latitude && longitude" class="get-location-result">
-      <div>Latitude: {{ latitude }}</div>
-      <div>Longitude: {{ longitude }}</div>
-    </div>
-    <div v-if="address" class="get-location-result">
-      Address: {{ address }}
-    </div>
+
+    <el-descriptions
+      title="Your Location"
+      direction="vertical"
+      :column="2"
+      :size="size"
+      border
+      v-if="latitude && longitude && address"
+    >
+      <el-descriptions-item label="Latitude" align="center">{{ latitude }}</el-descriptions-item>
+      <el-descriptions-item label="Longitude" align="center">{{ longitude }}</el-descriptions-item>
+      <el-descriptions-item label="Address" align="center">{{ address }}</el-descriptions-item>
+    </el-descriptions>
   </div>
 </template>
 
@@ -37,17 +43,19 @@ export default {
     async getAddress(lat, long) {
       try {
         const apiKey = process.env.VUE_APP_GOOGLE_API;
-        const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${apiKey}`);
+        const res = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${apiKey}`
+        );
         const result = await res.json();
         if (result.error_message) {
           console.log(result.error_message);
         } else {
           this.address = result.results[0].formatted_address;
         }
-      } catch(e) {
+      } catch (e) {
         console.log(e);
       }
-    }
+    },
   },
 };
 </script>
