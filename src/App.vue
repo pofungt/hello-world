@@ -2,19 +2,27 @@
   <el-button-group class="toolbar">
     <el-button type="primary" color="#626aef" :dark="isDark" plain @click="goPage(1)">
       <el-icon class="icon"><House /></el-icon>
-      Get Location
+      <div class="hidden-xs-only">
+        Get Location
+      </div>
     </el-button>
     <el-button type="primary" color="#626aef" :dark="isDark" plain @click="goPage(2)">
       <el-icon class="icon"><Search /></el-icon>
-      Search Address
+      <div class="hidden-xs-only">
+        Search Address
+      </div>
     </el-button>
     <el-button type="primary" color="#626aef" :dark="isDark" plain @click="goPage(3)">
       <el-icon class="icon"><MessageBox /></el-icon>
-      Search History
+      <div class="hidden-xs-only">
+        Search History
+      </div>
     </el-button>
     <el-button type="primary" color="#626aef" :dark="isDark" plain @click="goPage(4)">
       <el-icon><Clock /></el-icon>
-      Time Zone
+      <div class="hidden-xs-only">
+        Time Zone
+      </div>
     </el-button>
   </el-button-group>
   <GetLocation v-if="page === 1"></GetLocation>
@@ -25,6 +33,7 @@
 import { ref } from "vue";
 import GetLocation from "./components/GetLocation.vue";
 import SearchLocation from "./components/SearchLocation.vue";
+import 'element-plus/theme-chalk/display.css';
 
 import { House, Search, MessageBox, Clock } from "@element-plus/icons-vue";
 
