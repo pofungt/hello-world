@@ -1,12 +1,17 @@
 <template>
   <div class="search-location">
-    <input
-      type="text"
-      name="searchLocationInput"
+    <el-input
       v-model="inputValue"
+      class="w-50 m-1"
+      placeholder="Search Address"
+      :prefix-icon="Search"
+      size="large"
       @keyup.enter="submitSearch"
-    />
-    <button type="button" @click="submitSearch">Search</button>
+    >
+      <template #append>
+        <el-button :icon="Search" @click="submitSearch" />
+      </template>
+    </el-input>
   </div>
   <div v-if="latitude && longitude && locationsArray.length">
     <GoogleMapComponent
@@ -30,6 +35,9 @@
 import SearchHistoryTable from "./SearchHistoryTable";
 import GoogleMapComponent from "./GoogleMapComponent.vue";
 import TimeZoneComponent from "./TimeZoneComponent.vue";
+
+import { Search } from "@element-plus/icons-vue";
+
 export default {
   name: "SearchLocation",
   components: {
@@ -44,6 +52,7 @@ export default {
       longitude: null,
       locationsArray: [],
       componentKey: 0,
+      Search,
     };
   },
   methods: {
